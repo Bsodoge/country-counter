@@ -1,14 +1,21 @@
 const express = require("express");
+const fs = require("node:fs/promises");
 const geoip = require('geoip-lite');
 
 const app = express();
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
 	let ip = req.headers['x-forwarded-for'] ||  req.socket.remoteAddress || null;
 	if(ip.startsWith("::ffff:")) ip = ip.substring(7); 
-	const geo = geoip.lookup("94.2.58.89");
-	console.log(geo);
-	res.send(geo.country);
+	const geo = geoip.lookup("175.45.176.67");
+	try{
+		const countryCode = geo.country.toLowerCase();
+		const flag = await fs.readFile(`${__dirname}/country-flags/${countryCode}.svg`);
+		res.sendFile(`${__dirname}/country-flags/${countryCode}.svg`);
+	}catch(e){
+		console.log(e);
+		res.send(e)
+	}
 })
 
 app.listen(3000);
