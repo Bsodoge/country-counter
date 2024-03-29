@@ -11,7 +11,9 @@ app.get("/", async (req, res) => {
 	try{
 		const countryCode = geo.country.toLowerCase();
 		const flag = await fs.readFile(`${__dirname}/country-flags/${countryCode}.svg`);
-		res.sendFile(`${__dirname}/country-flags/${countryCode}.svg`);
+		res.writeHead(200, {"Content-Type" : "text/html"});
+		res.write(flag);
+		res.end();
 	}catch(e){
 		console.log(e);
 		res.send(e)
