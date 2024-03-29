@@ -15,7 +15,7 @@ app.get("/", async (req, res) => {
 		const flag = await fs.readFile(`${__dirname}/country-flags/${countryCode}.svg`);
 		//res.writeHead(200, {"Content-Type" : "text/html"});
 		//res.write(flag);
-		res.render("index")
+		res.render("index", { countryCode, flag  });
 		res.end();
 	}catch(e){
 		res.send(e)
