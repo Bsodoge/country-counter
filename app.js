@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("node:fs/promises");
 const geoip = require('geoip-lite');
+const sql = require("./db");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/", async (req, res) => {
 		const flag = await fs.readFile(`${__dirname}/country-flags/${countryCode}.svg`);
 		//res.writeHead(200, {"Content-Type" : "text/html"});
 		//res.write(flag);
+		await sql`INSERT INTO user_country_information (ip, countries) VALUES (${ip}, ${`[{ country: ${countryCode}, count: 0}]`});`
 		res.render("index", { countryCode, flag  });
 		res.end();
 	}catch(e){
