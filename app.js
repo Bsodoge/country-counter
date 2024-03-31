@@ -16,8 +16,8 @@ app.get("/", async (req, res) => {
 		const flag = await fs.readFile(`${__dirname}/country-flags/${countryCode}.svg`);
 		//res.writeHead(200, {"Content-Type" : "text/html"});
 		//res.write(flag);
-		await sql`INSERT INTO user_country_information (ip, countries) VALUES (${ip}, ${`[{ country: ${countryCode}, count: 0}]`});`
-		res.render("index", { countryCode, flag  });
+		await sql`INSERT INTO user_country_information (country, count) VALUES (${countryCode}, 1) ON CONFLICT (country) DO UPDATE SET count = user_country_information.count + 1;`
+		res.render("index", { countryCode, flag });
 		res.end();
 	}catch(e){
 		res.send(e)
