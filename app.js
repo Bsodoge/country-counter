@@ -8,20 +8,23 @@ const app = express();
 app.set("view engine", "ejs");
 
 app.get("/", async (req, res) => {
-	let ip = req.headers['x-forwarded-for'] ||  req.socket.remoteAddress || null;
-	if(ip.startsWith("::ffff:")) ip = ip.substring(7); 
-	const geo = geoip.lookup("175.45.176.67");
 	try{
+		const { username } = req.query;
+		let ip = req.headers['x-forwarded-for'] ||  req.socket.remoteAddress || null;
+		if(!username || !username.length || !username.trim().length) throw new Error("Username not valid");
+		if(ip.startsWith("::ffff:")) ip = ip.substring(7); 
+		ip = "175.45.176.69";
+		const geo = geoip.lookup(ip);
 		const countryCode = geo.country.toLowerCase();
 		const flag = await fs.readFile(`${__dirname}/country-flags/${countryCode}.svg`);
-		//res.writeHead(200, {"Content-Type" : "text/html"});
-		//res.write(flag);
-		await sql`INSERT INTO user_country_information (country, count) VALUES (${countryCode}, 1) ON CONFLICT (country) DO UPDATE SET count = user_country_information.count + 1;`
+		await sql`INSERT INTO country_information (country, ip) VALUES (${countryCode}, ${ip}) ON CONFLICT (ip) DO NOTHING;`
+		await sql`INSERT INTO user_information (username) VALUES (${username}) ON CONFLICT (username) DO NOTHING;`
+		await sql`INSERT INTO user_country_information (username, country) VALUES (${username}, ${countryCode}, ${ip}) ON CONFLICT (ip) DO NOTHING;`
 		res.render("index", { countryCode, flag });
-		res.end();
 	}catch(e){
-		res.send(e)
+		res.status(400).send({error: e.message})
 	}
+	res.end();
 })
 
 app.listen(3000);
