@@ -1,0 +1,35 @@
+body{
+	color: #fff;
+	margin: 0;
+	padding: 0;
+	font-family: 'Segoe UI', Ubuntu, Sans-Serif;
+}
+
+.container{
+	width: 467px;
+	height: 195px;
+	background-color: #1a1b27;
+	padding: 5px;
+}
+
+.header{
+	font-size: 1.25rem;
+}
+
+.country-list{
+	display: flex;
+	gap: 8px;
+	list-style: none;
+	padding-left: 5px;
+}
+
+.country-item{
+	display: flex;
+	gap: 4px;
+	text-align: center;
+	align-items: center;
+}
+
+svg{
+	width: 20px;
+}
