@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-	<h1>Country Code <%= countryCode %></h1>
+	<div>
+		<h1>This page has been viewed by people in: </h1>
+		<ul>
+		  <% countryCount.map((country)=>{ %>
+		    <li>
+       			 <%- country.flag %>
+			 <div><%= country.count %></div>
+   		    </li>
+		  <% }) %>
+		</ul>
+	</div>
 </body>
 </html>
