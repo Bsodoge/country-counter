@@ -36,6 +36,7 @@ app.get("/", async (req, res) => {
 		}
 		res.render("index", { countryCount });
 	}catch(e){
+		console.log(e);
 		res.status(400).send({error: e.message})
 	}
 	res.end();
