@@ -16,6 +16,7 @@ app.get("/", async (req, res) => {
 		let ip = req.headers['x-forwarded-for'] ||  req.socket.remoteAddress || null;
 		if(!username || !username.length || !username.trim().length) throw new Error("Username not valid");
 		if(ip.startsWith("::ffff:")) ip = ip.substring(7); 
+		console.log(ip)
 		const geo = geoip.lookup(ip);
 		const countryCode = geo.country.toLowerCase();
 		await sql`INSERT INTO country_information (country, ip) VALUES (${countryCode}, ${ip}) ON CONFLICT (ip) DO NOTHING;`
