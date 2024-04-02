@@ -2,10 +2,13 @@ const express = require("express");
 const fs = require("node:fs/promises");
 const geoip = require('geoip-lite');
 const sql = require("./db");
+const path = require("path");
 
 const app = express();
 
 app.set("view engine", "ejs");
+
+app.use(express.static(path.join(__dirname, "public")))
 
 app.get("/", async (req, res) => {
 	try{
@@ -13,7 +16,6 @@ app.get("/", async (req, res) => {
 		let ip = req.headers['x-forwarded-for'] ||  req.socket.remoteAddress || null;
 		if(!username || !username.length || !username.trim().length) throw new Error("Username not valid");
 		if(ip.startsWith("::ffff:")) ip = ip.substring(7); 
-		ip = "175.45.176.15";
 		const geo = geoip.lookup(ip);
 		const countryCode = geo.country.toLowerCase();
 		await sql`INSERT INTO country_information (country, ip) VALUES (${countryCode}, ${ip}) ON CONFLICT (ip) DO NOTHING;`
