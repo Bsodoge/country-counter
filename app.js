@@ -15,6 +15,8 @@ const generateCard = (countryCount) => {
 	svg.setAttribute('style', 'border: 1px solid black');
 	svg.setAttribute('width', '467');
 	svg.setAttribute('height', '195');
+	svg.setAttribute('role', 'img');
+	svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 	svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
 	
 	const container = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -88,6 +90,10 @@ app.get("/", async (req, res) => {
 		  countryCount.push({ code, flag: string, count: 1});
 		}
 		//res.render("index", { countryCount });
+		res.set({
+			'Content-Type': 'image/svg+xml',
+	  		'Content-Length': '123',
+		})	
 		res.send(generateCard(countryCount));
 	}catch(e){
 		console.log(e);
