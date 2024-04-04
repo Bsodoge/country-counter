@@ -88,7 +88,6 @@ app.get("/", async (req, res) => {
 		  countryCount.push({ code, flag: string, count: 1});
 		}
 		//res.render("index", { countryCount });
-		console.log(generateCard(countryCount));
 		res.send(generateCard(countryCount));
 	}catch(e){
 		console.log(e);
