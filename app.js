@@ -66,8 +66,7 @@ const generateCard = (countryCount) => {
 app.get("/", async (req, res) => {
 	try{
 		const { username } = req.query;
-		//let ip = req.headers['x-forwarded-for'].split(',')[0] ||  req.socket.remoteAddress || null;
-		ip = "175.45.177.11";
+		let ip = req.headers['x-forwarded-for'].split(',')[0] ||  req.socket.remoteAddress || null;
 		if(!username || !username.length || !username.trim().length) throw new Error("Username not valid");
 		if(ip.startsWith("::ffff:")) ip = ip.substring(7); 
 		const geo = geoip.lookup(ip);
