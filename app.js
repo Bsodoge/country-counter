@@ -3,17 +3,71 @@ const fs = require("node:fs/promises");
 const geoip = require('geoip-lite');
 const sql = require("./db");
 const path = require("path");
+const jsdom = require("jsdom");
 
 const app = express();
 
-app.set("view engine", "ejs");
+const generateCard = (countryCount) => {
+	const { JSDOM } = jsdom;
+	const { document } = (new JSDOM(`<!DOCTYPE html><p>Hello world</p>`)).window;
 
-app.use(express.static(path.join(__dirname, "public")))
+	const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svg.setAttribute('style', 'border: 1px solid black');
+	svg.setAttribute('width', '467');
+	svg.setAttribute('height', '195');
+	svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+	
+	const container = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	container.setAttribute('fill', '#1a1b27');
+	container.setAttribute('width', '467');
+	container.setAttribute('height', '195');
+	container.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+	svg.appendChild(container);	
+
+	const title = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	title.setAttribute('fill', '#fff');
+	title.setAttribute('x', `5`);
+	title.setAttribute('y', `30`);
+	title.setAttribute('font-size', `20`);
+	title.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+	title.textContent = "This page has been viewed by people in: ";
+	svg.appendChild(title);
+
+	let x = 8;
+	let y = -40;
+	countryCount.forEach(country => {
+		const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+		group.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+
+		group.innerHTML += country.flag;
+		group.firstChild.setAttribute("width", "20");
+		group.firstChild.setAttribute("x", `${x}`);
+		group.firstChild.setAttribute("y", `${y}`);
+
+		const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+		text.setAttribute('fill', '#fff');
+		text.setAttribute('x', `${x + 27}`);
+		text.setAttribute('y', `${y + 101.5}`);
+		text.setAttribute('font-size', `16`);
+		text.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+		text.textContent = country.count;
+		group.appendChild(text);
+
+		svg.appendChild(group);
+		x += 50;
+		if(x >= 400){
+			x = 8
+			y += 20; 
+		}
+	})
+	return svg.outerHTML;
+}
 
 app.get("/", async (req, res) => {
 	try{
 		const { username } = req.query;
-		let ip = req.headers['x-forwarded-for'].split(',')[0] ||  req.socket.remoteAddress || null;
+		//let ip = req.headers['x-forwarded-for'].split(',')[0] ||  req.socket.remoteAddress || null;
+		ip = "175.45.177.11";
 		if(!username || !username.length || !username.trim().length) throw new Error("Username not valid");
 		if(ip.startsWith("::ffff:")) ip = ip.substring(7); 
 		const geo = geoip.lookup(ip);
@@ -31,9 +85,12 @@ app.get("/", async (req, res) => {
  			continue;
 		  }
 		  const flag = await fs.readFile(`${__dirname}/country-flags/${code}.svg`);
-		  countryCount.push({ code, flag, count: 1});
+	     	  const string = flag.toString();
+		  countryCount.push({ code, flag: string, count: 1});
 		}
-		res.render("index", { countryCount });
+		//res.render("index", { countryCount });
+		console.log(generateCard(countryCount));
+		res.send(generateCard(countryCount));
 	}catch(e){
 		console.log(e);
 		res.status(400).send({error: e.message})
