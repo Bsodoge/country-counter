@@ -4,7 +4,7 @@ Shows what country people have viewed your profile from. Created with Node.js wi
 ## Usage
 Put following link in your README.md, make sure to change the username to your own.
 ```
-https://country-counter.onrender.com/?username=[YOUR-USERNAME]
+![Country Counter](https://country-counter.onrender.com/?username=[YOUR-USERNAME])
 ```
 
 ## Run locally
