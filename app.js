@@ -18,7 +18,12 @@ const generateCard = (countryCount) => {
 	svg.setAttribute('role', 'img');
 	svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 	svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
-	
+
+	const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
+	style.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+	style.innerHTML = "@import url('https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic');"
+	svg.appendChild(style);
+
 	const container = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 	container.setAttribute('fill', '#1a1b27');
 	container.setAttribute('width', '467');
@@ -31,6 +36,7 @@ const generateCard = (countryCount) => {
 	title.setAttribute('x', `5`);
 	title.setAttribute('y', `30`);
 	title.setAttribute('font-size', `20`);
+	title.setAttribute('font-family', 'Roboto');
 	title.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
 	title.textContent = "This page has been viewed by people in: ";
 	svg.appendChild(title);
@@ -51,6 +57,7 @@ const generateCard = (countryCount) => {
 		text.setAttribute('x', `${x + 27}`);
 		text.setAttribute('y', `${y + 101.5}`);
 		text.setAttribute('font-size', `16`);
+		text.setAttribute('font-family', 'Roboto');
 		text.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
 		text.textContent = country.count;
 		group.appendChild(text);
