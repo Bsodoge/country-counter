@@ -96,7 +96,7 @@ app.get("/", async (req, res) => {
 	     	  const string = flag.toString();
 		  countryCount.push({ code, flag: string, count: 1});
 		}
-		//res.render("index", { countryCount });
+		countryCount.sort((a, b) => a.count > b.count ? -1 : 1);
 		res.set({
 			'Content-Type': 'image/svg+xml',
 	  		'Content-Length': '123',
