@@ -16,3 +16,6 @@ Put following link in your README.md, make sure to change the username to your o
 DATABASE_URL="[LINK-TO-YOUR-DB-URL]"
 ```
 4. Run `npm run dev`
+
+## Flag Source
+All flags used in this project are from this [repository](https://github.com/lipis/flag-icons).
