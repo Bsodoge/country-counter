@@ -1,4 +1,4 @@
-# country-counter
+# Country Counter
 Shows what country people have viewed your profile from. Created with Node.js with PostgreSQL for database.
 
 ## Usage
