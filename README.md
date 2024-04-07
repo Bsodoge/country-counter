@@ -2,7 +2,7 @@
 Shows what country people have viewed your profile from. Created with Node.js with PostgreSQL for database.
 
 ## Usage
-Put following link in your website, make sure to change the username to your own. This does not work on github README.md files due to github camo.
+Put following link in and `img` tag on your website, make sure to change the username to your own. This does not work on github README.md files due to github camo.
 ```
 https://country-counter.onrender.com/?username=[YOUR-USERNAME]
 ```
