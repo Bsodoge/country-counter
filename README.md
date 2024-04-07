@@ -2,9 +2,9 @@
 Shows what country people have viewed your profile from. Created with Node.js with PostgreSQL for database.
 
 ## Usage
-Put following link in your README.md, make sure to change the username to your own.
+Put following link in your website, make sure to change the username to your own. This does not work on github README.md files due to github camo.
 ```
-![Country Counter](https://country-counter.onrender.com/?username=[YOUR-USERNAME])
+https://country-counter.onrender.com/?username=[YOUR-USERNAME]
 ```
 
 ## Run locally
